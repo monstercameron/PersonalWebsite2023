@@ -1,11 +1,12 @@
 {
   "name": "personalwebsite2023",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is my personal website.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "demo": "node helpers/DatabaseDemo.js"
   },
   "author": "",
   "license": "ISC",
