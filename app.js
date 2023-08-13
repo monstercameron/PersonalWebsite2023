@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
+const routes = require("./routes/routes");
+const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const morgan = require("morgan");
-const Database = require("./helpers/database");
-const db = new Database();
 
 // Create logs directory if it doesn't exist
 const logsDirectory = path.join(__dirname, "logs");
@@ -34,52 +34,16 @@ app.use(
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
+// Use body-parser middleware for parsing request bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 // Define routes
-app.get("/", (req, res) => {
-  res.render("pages/index");
-});
+app.use("/", routes);
 
-app.get("/home", (req, res) => {
-  res.render("components/aboutme");
-});
-
-app.get("/projects", (req, res) => {
-  res.render("components/projects");
-});
-
-app.get("/resume", (req, res) => {
-  res.render("components/resume");
-});
-
-app.get("/blog", async (req, res) => {
-  try {
-    const posts = await db.select("SELECT * FROM blog_posts");
-
-    // Start building the HTML response
-    // let html = "<h1>Blog Posts</h1>";
-
-    // Iterate over each post to create an HTML representation
-    // for (const post of posts) {
-    //   html += `
-    //             <div style="border: 1px solid black; margin-bottom: 20px; padding: 10px;">
-    //                 <h2>${post.title}</h2>
-    //                 <p>${post.content}</p>
-    //                 <p><strong>Author:</strong> ${post.author}</p>
-    //                 <p><strong>Date:</strong> ${post.date}</p>
-    //             </div>
-    //         `;
-    // }
-    // res.send(html);
-
-    res.render("components/blog", { posts });
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-app.get("/workshop", (req, res) => {
-  res.render("components/workshop");
+// Error route for page not found
+app.use(function (req, res, next) {
+  res.status(404).render("pages/404");
 });
 
 // Error handling middleware
