@@ -1,57 +1,43 @@
-const express = require("express");
-const app = express();
-const routes = require("./routes/routes");
-const bodyParser = require("body-parser");
-const fs = require("fs");
-const path = require("path");
-const morgan = require("morgan");
+require("dotenv").config();
 
-// Create logs directory if it doesn't exist
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
+const morgan = require("morgan");
+const routes = require("./routes/routes");
+
+const app = express();
+
+// Directories and Logging Setup
 const logsDirectory = path.join(__dirname, "logs");
+
 if (!fs.existsSync(logsDirectory)) {
-  fs.mkdirSync(logsDirectory);
+    fs.mkdirSync(logsDirectory);
 }
 
-// Create a write stream for API logs
-const apiLogStream = fs.createWriteStream(path.join(logsDirectory, "api.log"), {
-  flags: "a",
-});
+const apiLogStream = fs.createWriteStream(path.join(logsDirectory, "api.log"), { flags: "a" });
+const errorLogStream = fs.createWriteStream(path.join(logsDirectory, "error.log"), { flags: "a" });
 
-// Create a write stream for error logs
-const errorLogStream = fs.createWriteStream(
-  path.join(logsDirectory, "error.log"),
-  { flags: "a" }
-);
-
-// Use morgan for API logging
-app.use(
-  morgan("combined", {
-    stream: apiLogStream,
-  })
-);
-
-// Set view engine and static folder
-app.set("view engine", "ejs");
+// Middleware Setup
+app.use(morgan("combined", { stream: apiLogStream }));
 app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
 
-// Use body-parser middleware for parsing request bodies
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Define routes
+// Route Definitions
 app.use("/", routes);
 
-// Error route for page not found
-app.use(function (req, res, next) {
-  res.status(404).render("pages/404");
+// 404 Error Route
+app.use((req, res, next) => {
+    res.status(404).render("pages/404");
 });
 
-// Error handling middleware
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  // Log error to error.log file
-  errorLogStream.write(`${new Date().toISOString()}: ${err.stack}\n`);
-  res.status(500).send("Something broke!");
+// Generic Error Handling Middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    errorLogStream.write(`${new Date().toISOString()}: ${err.stack}\n`);
+    res.status(500).send("Something broke!");
 });
 
 module.exports = app;
