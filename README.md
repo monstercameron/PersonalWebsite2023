@@ -45,7 +45,13 @@ The main entry point of the app is `index.js`.
    npm install
    ```
 
-4. Start the development server:
+4. Build tailwinds Css:
+
+   ```bash
+   npm run build:css
+   ```
+
+5. Start the development server:
 
    ```bash
    npm run dev
@@ -73,11 +79,15 @@ server {
     server_name www.earlcameron.com;
     listen 443 ssl;
 
-    # SSL configurations by Certbot
+    # Define the root for static assets
+    root /var/www/PersonalWebsite2023/public;
+
+    # SSL configurations managed by Certbot
     ssl_certificate /etc/letsencrypt/live/www.earlcameron.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/www.earlcameron.com/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
 
     location / {
         proxy_pass http://127.0.0.1:3000;
@@ -91,16 +101,19 @@ server {
         proxy_read_timeout 60s;
     }
 
+     # Serve images
     location ~ ^/images/ {
-        alias /var/www/PersonalWebsite2023/public/images/;
+        try_files $uri $uri/ =404;
     }
 
+    # Serve CSS
     location ~ ^/css/ {
-        alias /var/www/PersonalWebsite2023/public/css/;
+        try_files $uri $uri/ =404;
     }
 
+    # Serve JavaScript
     location ~ ^/js/ {
-        alias /var/www/PersonalWebsite2023/public/js/;
+        try_files $uri $uri/ =404;
     }
 }
 ```
