@@ -59,6 +59,140 @@ The main entry point of the app is `index.js`.
 - `npm run demo:blog`: Populates the database with demo blog data.
 - `npm run demo:projects`: Populates the database with demo project data.
 
+
+## 🖥 Nginx Server Configuration
+
+If you're looking to set up your website with Nginx and ensure that SSL/TLS is correctly configured using Let's Encrypt, you can follow the configuration provided below:
+
+### Main Server Configuration for `www.earlcameron.com`
+
+This configuration handles HTTPS traffic on port `443` and sets up proxying to your Node application, running on `localhost:3000`.
+
+```nginx
+server {
+    server_name www.earlcameron.com;
+    listen 443 ssl;
+
+    # SSL configurations by Certbot
+    ssl_certificate /etc/letsencrypt/live/www.earlcameron.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/www.earlcameron.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 60s;
+    }
+
+    location ~ ^/images/ {
+        alias /var/www/PersonalWebsite2023/public/images/;
+    }
+
+    location ~ ^/css/ {
+        alias /var/www/PersonalWebsite2023/public/css/;
+    }
+
+    location ~ ^/js/ {
+        alias /var/www/PersonalWebsite2023/public/js/;
+    }
+}
+```
+
+### Configuration for Subdomain `reader.earlcameron.com`
+
+This configuration sets up a basic proxy for traffic to another application, potentially running on `localhost:3001`.
+
+```nginx
+server {
+    server_name reader.earlcameron.com;
+    listen 80;
+
+    location / {
+        proxy_pass http://127.0.0.1:3001/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+### HTTP to HTTPS Redirect Configuration
+
+Forces a redirect from HTTP to HTTPS for `www.earlcameron.com`.
+
+```nginx
+server {
+    listen 80;
+    server_name www.earlcameron.com;
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+```
+
+---
+
+By following the above configurations, you ensure that your personal website and subdomains are appropriately directed and secured using SSL/TLS. Ensure you have installed and set up Let's Encrypt and Certbot before applying these configurations.
+
+---
+
+## 📟 Systemd Service Configuration
+
+For those looking to run the personal website as a service on systems using `systemd`, here's a service file that can be used to automatically start the website on boot and restart it if it fails.
+
+1. **Create a service file**: Create a new file named `personal-website.service` in the `/etc/systemd/system/` directory:
+
+   ```bash
+   sudo nano /etc/systemd/system/personal-website.service
+   ```
+
+2. **Paste the following configuration**:
+
+   ```ini
+   [Unit]
+   Description=Personal Website
+   Documentation=https://www.earlcameron.com
+   After=network.target
+
+   [Service]
+   Environment=NODE_ENV=production
+   Type=simple
+   User=root
+   WorkingDirectory=/var/www/PersonalWebsite2023/
+   ExecStart=/usr/bin/node /var/www/PersonalWebsite2023/server.js
+   Restart=on-failure
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+3. **Enable and Start the Service**:
+
+   After saving the file, you can enable the service to start on boot and start it immediately with:
+
+   ```bash
+   sudo systemctl enable personal-website
+   sudo systemctl start personal-website
+   ```
+
+4. **Monitor the Service**: To check the status of your service, you can use:
+
+   ```bash
+   sudo systemctl status personal-website
+   ```
+
+---
+
+Make sure you have the necessary permissions and you're operating in a secure environment, especially when running services as the `root` user. Consider creating a specific user for your service if possible.
+
 ### 📜 License
 
 This project is licensed under the ISC License.
