@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const routes = express.Router();
 const Database = require("../helpers/database");
@@ -29,6 +30,12 @@ routes.get("/projects", async (req, res) => {
 // Resume Route
 routes.get("/resume", (req, res) => {
   res.render("components/resume");
+});
+
+// Resume Route
+routes.get("/resume/markdown", (req, res) => {
+  const filePath = path.join(__dirname, "../public/files/resume.md");
+  res.sendFile(filePath);
 });
 
 // Blog Route
