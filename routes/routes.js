@@ -68,4 +68,25 @@ routes.post("/workshop", (req, res) => {
   }
 });
 
+
+// Demo Routes
+routes.get("/demo", (req, res) => {
+  // res.render("components/demologin", { email: "" });
+  res.render("components/demo", { email: "" });
+});
+
+routes.post("/demo", (req, res) => {
+  const { password, email } = req.body;
+  const checkCredentials = checkPassword(email + password, process.env.HASH);
+
+  if (checkCredentials) {
+    res.render("components/demo");
+  } else {
+    res.render("components/demologin", {
+      email: email || "",
+      error: "Incorrect email or password",
+    });
+  }
+});
+
 module.exports = routes;
