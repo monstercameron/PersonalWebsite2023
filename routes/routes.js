@@ -2,7 +2,8 @@ const path = require("path");
 const express = require("express");
 const routes = express.Router();
 const Database = require("../helpers/database");
-const { hashPassword, checkPassword } = require("../helpers/password");
+const { checkPassword } = require("../helpers/password");
+const EmailBuilder = require("../helpers/chatbot");
 
 const db = new Database();
 
@@ -70,9 +71,23 @@ routes.post("/workshop", (req, res) => {
 
 
 // Demo Routes
-routes.get("/demo", (req, res) => {
+routes.get("/demo", async (req, res) => {
+  const builder = new EmailBuilder()
+  res.render("components/demo", { goals: builder.goals, tones: builder.tones });
+});
+
+
+routes.post("/demo/generate", async (req, res) => {
   // res.render("components/demologin", { email: "" });
-  res.render("components/demo", { email: "" });
+  const builder = new EmailBuilder()
+        .withGoal(0)
+        .withTone(1)
+        .withIndustry('Software')
+        .withDetails('This is our latest update.');
+
+    const response = await builder.build();
+    console.log(response);
+  res.render("components/demo", { response: response });
 });
 
 routes.post("/demo", (req, res) => {
