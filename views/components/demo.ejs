@@ -1,10 +1,9 @@
-<div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 grid grid-cols-8 gap-y-10">
-
+<form hx-post="/demo/generate" hx-target="#emails" hx-params="*" id="demofrom" action=""
+    class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 grid grid-cols-8 gap-y-10">
     <div class="col-span-8">
         <h1 class="font-bold capitalize  text-2xl">Create your marketing email with AI</h1>
         Introduce information about your business and goal of the campaign and we'll take care of the rest
     </div>
-
     <div class="col-span-2">
         <h2 class="font-bold capitalize text-xl">Campaign Goal</h2>
     </div>
@@ -18,7 +17,6 @@
             </div>
             <% }) %>
     </div>
-
     <div class="col-span-2">
         <h2 class="font-bold capitalize text-xl">Brand Tone</h2>
     </div>
@@ -32,42 +30,37 @@
             </div>
             <% }) %>
     </div>
-
     <div class="col-span-2">
         <h2 class="font-bold capitalize text-xl">Industry</h2>
     </div>
     <div class="col-span-6">
-        <input type="text" name="" id="" class="border p-3 shadow-lg" placeholder="Marketing Agency">
+        <input type="text" id="" class="border p-3 shadow-lg" placeholder="Marketing Agency" name="campaignIndustry">
     </div>
-
     <div class="col-span-2">
         <h2 class="font-bold capitalize text-xl">Fine tune the outputs</h2>
     </div>
     <div class="col-span-6">
         <div class="grid grid-cols-1 gap-y-5">
             <div>
-                <input type="text" name="" id="" class="border p-3 shadow-lg capitalize" placeholder="your website">
+                <input type="text" id="" class="border p-3 shadow-lg capitalize" name="campaignWeb" placeholder="your website">
             </div>
             <div>
-                <input type="text" name="" id="" class="border p-3 shadow-lg capitalize" placeholder="your twitter">
+                <input type="text" id="" class="border p-3 shadow-lg capitalize" name="campaignTwitter" placeholder="your twitter">
             </div>
-
         </div>
     </div>
-
     <div class="col-span-8">
         <h2 class="font-bold capitalize text-xl">Tell us about the email you want to send:</h2>
     </div>
     <div class="col-span-8">
-        <textarea class="border shadow-lg w-full" rows="10"></textarea>
+        <textarea class="border shadow-lg w-full" rows="10" name="campaignDetails"></textarea>
     </div>
-
     <div class="col-span-4"></div>
-
     <div class="col-span-4 flex items-center justify-center">
-        <button class="rounded-lg shadow-lg bg-orange-600 p-5 px-10 capitalize text-white font-bold">
+        <button type="submit"
+            class="rounded-lg shadow-lg bg-orange-600 p-5 px-10 text-center text-white font-bold cursor-pointer">
             generate campaign
         </button>
     </div>
-
-</div>
+</form>
+<div id="emails" class="border p-5 shadow-lg"></div>

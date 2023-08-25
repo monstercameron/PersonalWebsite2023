@@ -4,6 +4,7 @@ const routes = express.Router();
 const Database = require("../helpers/database");
 const { checkPassword } = require("../helpers/password");
 const EmailBuilder = require("../helpers/chatbot");
+const emailBuilderLookup = new EmailBuilder();
 
 const db = new Database();
 
@@ -72,22 +73,53 @@ routes.post("/workshop", (req, res) => {
 
 // Demo Routes
 routes.get("/demo", async (req, res) => {
-  const builder = new EmailBuilder()
-  res.render("components/demo", { goals: builder.goals, tones: builder.tones });
+  res.render("components/demologin", { email: "" });
 });
 
 
 routes.post("/demo/generate", async (req, res) => {
-  // res.render("components/demologin", { email: "" });
-  const builder = new EmailBuilder()
-        .withGoal(0)
-        .withTone(1)
-        .withIndustry('Software')
-        .withDetails('This is our latest update.');
+  try {
+    const {
+      campaignGoal,
+      campaignTone,
+      campaignIndustry,
+      campaignWeb,
+      campaignTwitter,
+      campaignDetails
+    } = req.body || {};
 
-    const response = await builder.build();
-    console.log(response);
-  res.render("components/demo", { response: response });
+    // Guard against null or undefined values
+    if (!campaignGoal || !campaignTone || !campaignIndustry || !campaignDetails) {
+      return res.status(400).send("Required fields are missing.");
+    }
+
+    // Get index for goals and tones
+    const goalIndex = emailBuilderLookup.goals.indexOf(campaignGoal) >= 0 ? emailBuilderLookup.goals.indexOf(campaignGoal) : 0;
+    const toneIndex = emailBuilderLookup.tones.indexOf(campaignTone) >= 0 ? emailBuilderLookup.tones.indexOf(campaignTone) : 0;
+
+    const temperatures = [0.1, 0.2, 0.5, 0.7, 0.9];
+
+    // Create an array of promises
+    const builderPromises = temperatures.map(temp =>
+      new EmailBuilder()
+        .withGoal(goalIndex)
+        .withTone(toneIndex)
+        .withIndustry(campaignIndustry)
+        .withWebsite(campaignWeb)
+        .withTwitter(campaignTwitter)
+        .withDetails(campaignDetails)
+        .withTemperature(temp)
+        .build()
+    );
+
+    const responses = await Promise.all(builderPromises);
+
+    res.render("components/emails", { emails: responses });
+
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 routes.post("/demo", (req, res) => {
@@ -95,7 +127,7 @@ routes.post("/demo", (req, res) => {
   const checkCredentials = checkPassword(email + password, process.env.HASH);
 
   if (checkCredentials) {
-    res.render("components/demo");
+    res.render("components/demo", { goals: emailBuilderLookup.goals, tones: emailBuilderLookup.tones });
   } else {
     res.render("components/demologin", {
       email: email || "",

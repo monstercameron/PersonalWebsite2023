@@ -1,0 +1,37 @@
+<div>
+    <% emails.forEach((email, index)=> { %>
+        <div class="email-container">
+            <button onclick="toggleEmailVisibility('email-content-<%= index %>')">Toggle Email <%= index + 1 %></button>
+            <div id="email-content-<%= index %>" class="collapse">
+                <zero-md>
+                    <template>
+                        <link rel="stylesheet"
+                            href="https://cdn.jsdelivr.net/gh/sindresorhus/github-markdown-css@4/github-markdown.min.css" />
+                        <link rel="stylesheet"
+                            href="https://cdn.jsdelivr.net/gh/PrismJS/prism@1/themes/prism.min.css" />
+                    </template>
+                    <script type="text/markdown">
+                        <%= email %>
+                    </script>
+                </zero-md>
+            </div>
+        </div>
+        <% }) %>
+</div>
+
+<script>
+    function toggleEmailVisibility(id) {
+        const element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
+
+<style>
+    .collapse {
+        display: none;
+    }
+</style>
