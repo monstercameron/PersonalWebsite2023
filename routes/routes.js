@@ -124,7 +124,7 @@ routes.post("/demo/generate", async (req, res) => {
 
 routes.post("/demo", (req, res) => {
   const { password, email } = req.body;
-  const checkCredentials = checkPassword(email + password, process.env.HASH);
+  const checkCredentials = checkPassword(email + password, process.env.DEMO_HASH);
 
   if (checkCredentials) {
     res.render("components/demo", { goals: emailBuilderLookup.goals, tones: emailBuilderLookup.tones });
