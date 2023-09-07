@@ -213,3 +213,8 @@ This project is licensed under the ISC License.
 ---
 
 Thank you for checking out my personal website's repository! Feel free to fork, star, and share. If you have any feedback or questions, please drop me a message.
+
+
+### Issues to solve:
+When accessing a path such as http://localhost:3000/projects
+I want to access the projects page and not just return the projects partial
