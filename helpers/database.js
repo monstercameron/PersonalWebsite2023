@@ -62,6 +62,20 @@ class Database {
   }
 
   /**
+   * Select a single record from the database.
+   * @param {string} sql - The SQL string for the select operation.
+   * @param {Array} params - Parameters for the SQL statement.
+   */
+  selectOne(sql, params = []) {
+    return new Promise((resolve, reject) => {
+      this.db.get(sql, params, (err, row) => {
+        if (err) reject(err);
+        resolve(row);
+      });
+    });
+  }
+
+  /**
    * Closes the database connection.
    * @param {function} callback - Optional callback to handle after closure.
    */

@@ -1,55 +1,81 @@
 <!-- Begin Footer -->
 <footer class="bg-white">
-    <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-        <!-- Logo from the header -->
-        <div class="flex justify-center mb-6">
-            <a class="block text-teal-600" href="https://www.earlcameron.com">
-                <span class="sr-only">Home</span>
-                <svg class="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- SVG content remains unchanged -->
-                </svg>
-            </a>
-        </div>
-        <!-- <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
-            As an experienced and driven software engineer, I adeptly adapt to new platforms. Proficient in
-            designing, coding, debugging, and testing application and system software. I excel in high-pressure team
-            environments with strong interpersonal and communication skills.
-        </p> -->
-        <!-- Navigation links from the header -->
-        <ul class="mt-12 flex flex-wrap justify-center gap-6 text-sm">
-            <li>
-                <a hx-get="/home" hx-target="#main" hx-swap="innerHTML"
-                    class="text-gray-500 transition hover:text-gray-500/75" href="#">
-                    About Me
-                </a>
-            </li>
-            <li>
-                <a hx-get="/projects" hx-target="#main" hx-swap="innerHTML"
-                    class="text-gray-500 transition hover:text-gray-500/75"
-                    href="https://github.com/CodeforSouth/peoplebudget">
-                    Projects
-                </a>
-            </li>
-            <li>
-                <a hx-get="/resume" hx-target="#main" hx-swap="innerHTML"
-                    class="text-gray-500 transition hover:text-gray-500/75" href="http://rss.earlcameron.com"
-                    target="new">
-                    Resume
-                </a>
-            </li>
-            <li>
-                <a hx-get="/blog" hx-target="#main" hx-swap="innerHTML"
-                    class="text-gray-500 transition hover:text-gray-500/75" href="#">
-                    Blog
-                </a>
-            </li>
-            <li>
-                <a hx-get="/workshop" hx-target="#main" hx-swap="innerHTML"
-                    class="text-gray-500 transition hover:text-gray-500/75" href="#">
-                    Workshop
-                </a>
-            </li>
-        </ul>
+  <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <!-- Logo from the header -->
+    <div class="flex justify-center mb-6">
+      <a class="block text-teal-600" href="https://www.earlcameron.com">
+        <span class="sr-only">Home</span>
+        <svg
+          class="h-8"
+          viewBox="0 0 28 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        ></svg>
+      </a>
     </div>
+    <ul class="mt-12 flex flex-wrap justify-center gap-6 text-sm">
+      <li>
+        <a
+          hx-get="/"
+          hx-target="#main"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+          class="text-gray-500 transition hover:text-gray-500/75"
+          href="#"
+        >
+          About Me
+        </a>
+      </li>
+      <li>
+        <a
+          hx-get="/projects"
+          hx-target="#main"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+          class="text-gray-500 transition hover:text-gray-500/75"
+          href="https://github.com/CodeforSouth/peoplebudget"
+        >
+          Projects
+        </a>
+      </li>
+      <li>
+        <a
+          hx-get="/resume"
+          hx-target="#main"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+          class="text-gray-500 transition hover:text-gray-500/75"
+          href="http://rss.earlcameron.com"
+          target="new"
+        >
+          Resume
+        </a>
+      </li>
+      <li>
+        <a
+          hx-get="/blog"
+          hx-target="#main"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+          class="text-gray-500 transition hover:text-gray-500/75"
+          href="#"
+        >
+          Blog
+        </a>
+      </li>
+      <li>
+        <a
+          hx-get="/workshop"
+          hx-target="#main"
+          hx-swap="innerHTML"
+          hx-push-url="true"
+          class="text-gray-500 transition hover:text-gray-500/75"
+          href="#"
+        >
+          Workshop
+        </a>
+      </li>
+    </ul>
+  </div>
 </footer>
 <!-- End Footer -->
