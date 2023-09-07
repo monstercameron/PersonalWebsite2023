@@ -71,7 +71,7 @@ const renderAllPosts = async (req, res) => {
   if (posts && posts.length > 0) {
     res.render("components/blog", { posts });
   } else {
-    res.status(404).send("No Posts Available");
+    res.status(404).render("components/blog404");
   }
 };
 

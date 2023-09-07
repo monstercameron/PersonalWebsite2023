@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earl Cameron</title>
     <!-- Add the following line for the local CSS -->
-    <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript" src="https://unpkg.com/htmx.org@1.9.4"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"></script>
-</head>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" type="image/png" href="images/logotab.png">
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/htmx.org@1.9.4"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"
+    ></script>
+  </head>
 
-<body class="container mx-auto flex flex-col min-h-screen">
+  <body class="container mx-auto flex flex-col min-h-screen">
     <script type="">
-        const printDiv = (divName) => {
-            var printContents = document.getElementById(divName).shadowRoot.innerHTML;
-            var originalContents = document.body.innerHTML;
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-        }
-        const print = () => {
-            printDiv("resume");
-        }
+      const printDiv = (divName) => {
+        var printContents =
+          document.getElementById(divName).shadowRoot.innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+      };
+      const print = () => {
+        printDiv("resume");
+      };
     </script>
 
     <%- include('../components/nav'); %>
-        <main id="main" class="flex-grow">
-            <%- include('../components/aboutme'); %>
-        </main>
-        <%- include('../components/footer'); %>
-</body>
-
-
+    <main id="main" class="flex-grow">
+      <%- include('../components/aboutme'); %>
+    </main>
+    <%- include('../components/footer'); %>
+  </body>
 </html>
